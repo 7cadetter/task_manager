@@ -32,4 +32,9 @@ body {
     background-color: white;
     text-align: center;
     vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.itembox:hover {
+    transform: scale(1.1);
 }
