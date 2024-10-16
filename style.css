@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(255, 234, 211);
+}
+
 #title {
     text-align: center;
     font-family: "Afacad Flux";
