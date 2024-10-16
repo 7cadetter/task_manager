@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: rgb(255, 234, 211);
 }
@@ -6,4 +11,9 @@ body {
     text-align: center;
     font-family: "Afacad Flux";
     font-size: 60px;
+}
+
+#titlebar {
+    background-color: rgb(255, 244, 233);
+    padding: 1em;
 }
