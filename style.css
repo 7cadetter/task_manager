@@ -50,17 +50,17 @@ body {
 .boxcontent {
     height: 100%;
     width: 78.9%;
-    border-radius: inherit;
     float: right;
     position: relative;
+    background-color: rgb(253, 246, 239);
 }
 
 .boxtitle {
     font-family: "Afacad Flux";
     font-size: 60px;
     position: absolute;
-    top: 0;
-    left: 10px;
+    top: 25px;
+    left: 50px;
     margin: 0;
 }
 
@@ -69,9 +69,10 @@ body {
     height: 170px;
     background: conic-gradient(
         rgb(87, 255, 87) 0% calc(var(--percentage)*1%),
-        rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+        white calc(var(--percentage)*1%) 100%
     );
     border-radius: 100px;
+    border: 0.5px gray solid;
     float: right;
     margin-top: 15px;
     margin-right: 20px;
@@ -88,9 +89,10 @@ body {
     float: right;
     margin-top: 20px;
     margin-right: 20px;
+    border: 0.5px gray solid;
     width: 130px;
     height: 130px;
-    background-color: white;
+    background-color: rgb(253, 246, 239);
     border-radius: 50%;
     top: 60%;
     left: 75%;
@@ -100,7 +102,9 @@ body {
 .text1 {
     position: absolute;
     right: 60px;
+    font-size: 25px;
     transition: transform 0.1s ease-out;
+    transform: translateX(17%);
 }
 
 .text2 {
@@ -117,7 +121,7 @@ body {
 }
 
 .percentage-circle:hover .text1 {
-    transform: translateY(30%);
+    transform: translateY(25%) translateX(15%) scale(0.75);
 }
 
 .percentage-circle:hover .text2 {
@@ -137,42 +141,42 @@ body {
         background: conic-gradient(
         rgb(50, 172, 50) calc(var(--percentage)*1%/8),
         rgb(87, 255, 87) calc((var(--percentage)*1%/8)*2) calc(var(--percentage)*1%),
-        rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+        white calc(var(--percentage)*1%) 100%
         );
     }
     14% {
         background: conic-gradient(
             rgb(50, 172, 50) calc((var(--percentage)*1%/8)*2),
             rgb(87, 255, 87) calc((var(--percentage)*1%/8)*3) calc(var(--percentage)*1%),
-            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+            white calc(var(--percentage)*1%) 100%
         );
     }
     28% {
         background: conic-gradient(
             rgb(50, 172, 50) calc((var(--percentage)*1%/8)*3),
             rgb(87, 255, 87) calc((var(--percentage)*1%/8)*4) calc(var(--percentage)*1%),
-            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+            white calc(var(--percentage)*1%) 100%
         );
     }
     42% {
         background: conic-gradient(
             rgb(50, 172, 50) calc((var(--percentage)*1%/8)*4),
             rgb(87, 255, 87) calc((var(--percentage)*1%/8)*5) calc(var(--percentage)*1%),
-            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+            white calc(var(--percentage)*1%) 100%
         );
     }
     56% {
         background: conic-gradient(
             rgb(50, 172, 50) calc((var(--percentage)*1%/8)*5),
             rgb(87, 255, 87) calc((var(--percentage)*1%/8)*6) calc(var(--percentage)*1%),
-            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+            white calc(var(--percentage)*1%) 100%
         );
     }
     70% {
         background: conic-gradient(
             rgb(50, 172, 50) calc((var(--percentage)*1%/8)*6),
             rgb(87, 255, 87) calc((var(--percentage)*1%/8)*7) calc(var(--percentage)*1%),
-            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+            white calc(var(--percentage)*1%) 100%
         )
 
     }
@@ -180,30 +184,70 @@ body {
         background: conic-gradient(
             rgb(50, 172, 50) calc((var(--percentage)*1%/8)*7),
             rgb(87, 255, 87) calc(var(--percentage)*1%),
-            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+            white calc(var(--percentage)*1%) 100%
         );
     }
     100% {
         background: conic-gradient(
             rgb(50, 172, 50) 0% calc(var(--percentage)*1%),
-            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+            white calc(var(--percentage)*1%) 100%
         );
     }
 }
 
-/* @keyframes lowertext {
-    0% {
-        transform: translateY(0%);
-    }
-    100% {
-        transform: translateY(30%);
-    }
-} */
-
 .actionsbox {
-    width: 70%;
-    height:25%;
+    width: 48%;
+    height: 25%;
     border: 1px solid black;
-    top: 148px;
+    top: 140px;
+    left: 70px;
+    position: relative;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.addbutton {
     position: absolute;
+    left: 0px;
+    line-height: 50px;
+    font-family: "Afacad Flux";
+    font-size: 20px;
+    background-color: white;
+    border: 1px groove;
+    transition: transform 0.1s ease-out;
+}
+
+.addbutton:hover {
+    transform: scale(1.05);
+}
+
+.removebutton {
+    position: absolute;
+    left: 110px;
+    line-height: 50px;
+    font-family: "Afacad Flux";
+    font-size: 20px;
+    background-color: white;
+    border: 1px groove;
+    transition: transform 0.1s ease-out;
+}
+
+.removebutton:hover {
+    transform: scale(1.05);
+}
+
+.finishbutton {
+    position: absolute;
+    right:0px;
+    line-height: 50px;
+    width: 105px;
+    font-family: "Afacad Flux";
+    font-size: 20px;
+    background-color: rgb(207, 0, 0);
+    border: 0px;
+    transition: transform 0.1s ease-out;
+}
+
+.finishbutton:hover {
+    transform: scale(1.05);
 }
