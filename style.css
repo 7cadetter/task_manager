@@ -71,8 +71,8 @@ body {
     width: 170px;
     height: 170px;
     background: conic-gradient(
-        rgb(87, 255, 87) calc(var(--percentage) * 1%),
-        rgb(238, 238, 238) calc(var(--percentage) * 1%) 100%
+        rgb(87, 255, 87) 0% calc(var(--percentage)*1%),
+        rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
     );
     border-radius: 100px;
     float: right;
@@ -101,42 +101,64 @@ body {
 }
 
 .persistent-animation {
-    animation: gradientAnimation 1s linear forwards;
+    animation: gradientAnimation 0.1s linear forwards;
 }
 
 @keyframes gradientAnimation {
     0% {
         background: conic-gradient(
-        rgb(87, 255, 87) calc(var(--percentage) * 1%),
-        rgb(238, 238, 238) calc(var(--percentage) * 1%) 100%
+        rgb(50, 172, 50) calc(var(--percentage)*1%/8),
+        rgb(87, 255, 87) calc((var(--percentage)*1%/8)*2) calc(var(--percentage)*1%),
+        rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
         );
     }
-    25% {
+    14% {
         background: conic-gradient(
-        rgb(50, 172, 50) 0% calc(((var(--percentage)*2)/6) * 1%),
-        rgb(87, 255, 87) calc(var(--percentage) * 1%),
-        rgb(238, 238, 238) calc(var(--percentage) * 1%) 100%
+            rgb(50, 172, 50) calc((var(--percentage)*1%/8)*2),
+            rgb(87, 255, 87) calc((var(--percentage)*1%/8)*3) calc(var(--percentage)*1%),
+            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
         );
     }
-    50% {
+    28% {
         background: conic-gradient(
-        rgb(50, 172, 50) 0% calc(((var(--percentage)*3)/6) * 1%),
-        rgb(87, 255, 87) calc(var(--percentage) * 1%),
-        rgb(238, 238, 238) calc(var(--percentage) * 1%) 100%
+            rgb(50, 172, 50) calc((var(--percentage)*1%/8)*3),
+            rgb(87, 255, 87) calc((var(--percentage)*1%/8)*4) calc(var(--percentage)*1%),
+            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
         );
     }
-    75% {
+    42% {
         background: conic-gradient(
-        rgb(50, 172, 50) 0% calc(((var(--percentage)*4)/6) * 1%),
-        rgb(87, 255, 87) calc(var(--percentage) * 1%),
-        rgb(238, 238, 238) calc(var(--percentage) * 1%) 100%
+            rgb(50, 172, 50) calc((var(--percentage)*1%/8)*4),
+            rgb(87, 255, 87) calc((var(--percentage)*1%/8)*5) calc(var(--percentage)*1%),
+            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+        );
+    }
+    56% {
+        background: conic-gradient(
+            rgb(50, 172, 50) calc((var(--percentage)*1%/8)*5),
+            rgb(87, 255, 87) calc((var(--percentage)*1%/8)*6) calc(var(--percentage)*1%),
+            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+        );
+    }
+    70% {
+        background: conic-gradient(
+            rgb(50, 172, 50) calc((var(--percentage)*1%/8)*6),
+            rgb(87, 255, 87) calc((var(--percentage)*1%/8)*7) calc(var(--percentage)*1%),
+            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
+        )
+
+    }
+    84% {
+        background: conic-gradient(
+            rgb(50, 172, 50) calc((var(--percentage)*1%/8)*7),
+            rgb(87, 255, 87) calc(var(--percentage)*1%),
+            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
         );
     }
     100% {
         background: conic-gradient(
-        rgb(50, 172, 50) 0% calc((var(--percentage)) * 1%),
-        rgb(87, 255, 87) calc(var(--percentage) * 1%),
-        rgb(238, 238, 238) calc(var(--percentage) * 1%) 100%
+            rgb(50, 172, 50) 0% calc(var(--percentage)*1%),
+            rgb(238, 238, 238) calc(var(--percentage)*1%) 100%
         );
     }
 }
