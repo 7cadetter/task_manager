@@ -49,7 +49,7 @@ body {
 
 .boxcontent {
     height: 100%;
-    width: 77%;
+    width: 78.9%;
     border-radius: inherit;
     float: right;
     position: relative;
@@ -60,7 +60,7 @@ body {
     font-size: 60px;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 10px;
     margin: 0;
 }
 
@@ -77,12 +77,12 @@ body {
     margin-right: 20px;
     transition: transform 0.3s ease;
     position: relative;
-    --percentage: 15;
+    --percentage: 5;
     --episodes: '15/300';
 }
 
 .innercircle {
-    content: var(--episodes);
+    
     font-family: "Afacad Flux";
     line-height: 130px;
     float: right;
@@ -97,12 +97,39 @@ body {
     z-index: 1;
 }
 
+.text1 {
+    position: absolute;
+    right: 60px;
+    transition: transform 0.1s ease-out;
+}
+
+.text2 {
+    position: absolute;
+    font-size: 50px;
+    bottom: 30px;
+    transform: translateX(-45%);
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+}
+
 .percentage-circle:hover {
     transform: scale(1.1);
 }
 
+.percentage-circle:hover .text1 {
+    transform: translateY(30%);
+}
+
+.percentage-circle:hover .text2 {
+    opacity: 1;
+}
+
 .persistent-animation {
-    animation: gradientAnimation 0.1s linear forwards;
+    animation: gradientAnimation 0.1s ease-out forwards;
+}
+
+.lowering_anim {
+    animation: lowertext 0.1s ease-out forwards;
 }
 
 @keyframes gradientAnimation {
@@ -164,3 +191,19 @@ body {
     }
 }
 
+/* @keyframes lowertext {
+    0% {
+        transform: translateY(0%);
+    }
+    100% {
+        transform: translateY(30%);
+    }
+} */
+
+.actionsbox {
+    width: 70%;
+    height:25%;
+    border: 1px solid black;
+    top: 148px;
+    position: absolute;
+}
