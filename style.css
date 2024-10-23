@@ -80,6 +80,7 @@ body {
     margin-right: 20px;
     transition: transform 0.3s ease;
     position: relative;
+    --percentage: 15;
 }
 
 .percentage-circle::before {
