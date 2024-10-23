@@ -8,9 +8,6 @@ body, html {
 body {
     background-color: rgb(255, 234, 211);
     height: 100vh;
-    /* display: flex;                Center the circle in the viewport */
-    /* justify-content: center;      Center horizontally */
-    /* align-items: center; */
 }
 
 #title {
@@ -81,20 +78,23 @@ body {
     transition: transform 0.3s ease;
     position: relative;
     --percentage: 15;
+    --episodes: '15/300';
 }
 
-.percentage-circle::before {
-    content: '14/300';
+.innercircle {
+    content: var(--episodes);
     font-family: "Afacad Flux";
     line-height: 130px;
-    position: absolute;
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
     width: 130px;
     height: 130px;
     background-color: white;
     border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 60%;
+    left: 75%;
+    z-index: 1;
 }
 
 .percentage-circle:hover {

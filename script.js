@@ -5,11 +5,15 @@ const percentageCircle = document.querySelector('.percentage-circle');
 const increButton = document.getElementById('testbutton');
 
 increButton.addEventListener('click', () => {
-    currentepisodes = parseFloat(currentepisodes)
-    let percent = (currentepisodes/maxepisodes) * 100;
+    currentepisodes += 1; // Increment the value first
+    let currentepisodes2 = parseFloat(currentepisodes)
+    let percent = (currentepisodes2/maxepisodes) * 100;
     console.log(percent);
     document.getElementById('narutopercent').style.setProperty('--percentage', percent);
-    currentepisodes += 1;
+    const episodesContent = `${currentepisodes}/300`;
+    console.log(episodesContent); // Log the content value
+    document.getElementById('narutoinner').innerText = episodesContent;
+    
 });
 
 percentageCircle.addEventListener('mouseenter', () => {
