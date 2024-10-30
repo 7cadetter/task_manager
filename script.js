@@ -5,14 +5,18 @@ fetch('http://localhost:3000/data')
     .then(data => {
 
         data.forEach(item => {
-            const episodes = item.episodes;
-            const watched = item.watched;
-            const percent = (watched / episodes) * 100;
+            const percent = (item.watched / item.episodes) * 100;
 
             const box = document.querySelector(`.itembox[id="${item.id}"]`)
+            const boxtitle = box.querySelector(`.boxtitle`);
+            const boximg = box.querySelector(`.boximg`);
 
+            boxtitle.innerText = item.title;
             box.setAttribute('data-current', item.watched);
             box.setAttribute('data-max', item.episodes);
+            boximg.setAttribute('src', item.image_url);
+            boximg.setAttribute('alt', item.title);
+
             const circle = box.querySelector(`.percentage-circle`);
             if (circle) {
                 circle.style.setProperty('--percentage', percent);
@@ -20,7 +24,7 @@ fetch('http://localhost:3000/data')
                 const innerText = circle.querySelector('.innercircle .text1');
                 const percentageText = circle.querySelector('.innercircle .text2');
 
-                if (innerText) innerText.textContent = `${watched}/${episodes}`;
+                if (innerText) innerText.textContent = `${item.watched}/${item.episodes}`;
                 if (percentageText) percentageText.textContent = `${Math.round(percent)}%`;
             }
         });
