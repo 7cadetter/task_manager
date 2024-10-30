@@ -1,75 +1,105 @@
-const percentageCircle = document.querySelector('.percentage-circle');
-const innerCircle = document.querySelector('.innercircle');
-const text1 = document.querySelector('.text1');
+const percentageCircles = document.querySelectorAll('.percentage-circle');
 
-// fetch('http://localhost:3000/data')
-//     .then(response => response.json())
-//     .then(data => {
-//         const mediaContainer = document.getElementById('mediaContainer');
-//         data.forEach(item => {
-//             const div = document.createElement('div');
-//             const title = item.title;
-//             const episodes = item.episodes;
-//             const watched = item.watched;
-//             div.innerHTML = `${title}, ${episodes}, ${watched}`;
-//             mediaContainer.appendChild(div);
-//         });
-//     })
-//     .catch(error => console.error('Error fetching data:', error));
+fetch('http://localhost:3000/data')
+    .then(response => response.json())
+    .then(data => {
 
-document.addEventListener('DOMContentLoaded', () => {
-    const addButtons = document.querySelectorAll('.addbutton');
-    const removeButtons = document.querySelectorAll('.removebutton');
+        data.forEach(item => {
+            const episodes = item.episodes;
+            const watched = item.watched;
+            const percent = (watched / episodes) * 100;
 
-    addButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const itemBox = button.closest('.itembox');
-            const currentEpisodes = parseInt(itemBox.getAttribute('data-current'));
-            const maxEpisodes = parseInt(itemBox.getAttribute('data-max'));
+            const circle = document.querySelector(`.itembox[id="${item.id}"] .percentage-circle`);
+            if (circle) {
+                circle.style.setProperty('--percentage', percent);
 
-            if (currentEpisodes < maxEpisodes) {
-                const newEpisodes = currentEpisodes + 1;
-                itemBox.setAttribute('data-current', newEpisodes);
-                const percent = (newEpisodes / maxEpisodes) * 100;
+                const innerText = circle.querySelector('.innercircle .text1');
+                const percentageText = circle.querySelector('.innercircle .text2');
 
-                const percentCircle = itemBox.querySelector('.percentage-circle');
-                percentCircle.style.setProperty('--percentage', percent);
+                if (innerText) innerText.textContent = `${watched}/${episodes}`;
+                if (percentageText) percentageText.textContent = `${Math.round(percent)}%`;
 
-                const innerCircle = itemBox.querySelector('.innercircle');
-                innerCircle.querySelector('.text1').innerText = `${newEpisodes}/${maxEpisodes}`;
-                innerCircle.querySelector('.text2').innerText = `${Math.round(percent)}%`;
+                console.log(`Updated circle for id ${item.id}: ${watched}/${episodes} (${Math.round(percent)}%)`);
+            } else {
+                console.warn(`No circle found for id ${item.id}`);
             }
         });
-    });
+    })
+    .catch(error => console.error('Error fetching data:', error));
 
-    removeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const itemBox = button.closest('.itembox');
-            const currentEpisodes = parseInt(itemBox.getAttribute('data-current'));
-            const maxEpisodes = parseInt(itemBox.getAttribute('data-max'));
 
-            if (currentEpisodes > 0) {
-                const newEpisodes = currentEpisodes - 1;
-                itemBox.setAttribute('data-current', newEpisodes);
-                const percent = (newEpisodes / maxEpisodes) * 100;
+const addButtons = document.querySelectorAll('.addbutton');
+const removeButtons = document.querySelectorAll('.removebutton');
 
-                const percentCircle = itemBox.querySelector('.percentage-circle');
-                percentCircle.style.setProperty('--percentage', percent);
+addButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const itemBox = button.closest('.itembox');
+        const currentEpisodes = parseInt(itemBox.getAttribute('data-current'));
+        const maxEpisodes = parseInt(itemBox.getAttribute('data-max'));
 
-                const innerCircle = itemBox.querySelector('.innercircle');
-                innerCircle.querySelector('.text1').innerText = `${newEpisodes}/${maxEpisodes}`;
-                innerCircle.querySelector('.text2').innerText = `${Math.round(percent)}%`;
-            }
-        });
+        if (currentEpisodes < maxEpisodes) {
+            const newEpisodes = currentEpisodes + 1;
+            itemBox.setAttribute('data-current', newEpisodes);
+            const percent = (newEpisodes / maxEpisodes) * 100;
+
+            const percentCircle = itemBox.querySelector('.percentage-circle');
+            percentCircle.style.setProperty('--percentage', percent);
+
+            const innerCircle = itemBox.querySelector('.innercircle');
+            innerCircle.querySelector('.text1').innerText = `${newEpisodes}/${maxEpisodes}`;
+            innerCircle.querySelector('.text2').innerText = `${Math.round(percent)}%`;
+        }
     });
 });
 
-percentageCircle.addEventListener('mouseenter', () => {
-    percentageCircle.classList.add('persistent-animation');
-    text1.classList.add('lowering_anim');
+removeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const itemBox = button.closest('.itembox');
+        const currentEpisodes = parseInt(itemBox.getAttribute('data-current'));
+        const maxEpisodes = parseInt(itemBox.getAttribute('data-max'));
+
+        if (currentEpisodes > 0) {
+            const newEpisodes = currentEpisodes - 1;
+            itemBox.setAttribute('data-current', newEpisodes);
+            const percent = (newEpisodes / maxEpisodes) * 100;
+
+            const percentCircle = itemBox.querySelector('.percentage-circle');
+            percentCircle.style.setProperty('--percentage', percent);
+
+            const innerCircle = itemBox.querySelector('.innercircle');
+            innerCircle.querySelector('.text1').innerText = `${newEpisodes}/${maxEpisodes}`;
+            innerCircle.querySelector('.text2').innerText = `${Math.round(percent)}%`;
+        }
+    });
 });
 
-percentageCircle.addEventListener('mouseleave', () => {
-    percentageCircle.classList.remove('persistent-animation');
-    text1.classList.remove('lowering_anim');
+percentageCircles.forEach(circle => {
+    const innerCircle = circle.querySelector('.innercircle');
+    const text1 = innerCircle.querySelector('.text1');
+
+    circle.addEventListener('mouseenter', () => {
+        circle.classList.add('persistent-animation');
+        text1.classList.add('lowering_anim');
+    });
+
+    circle.addEventListener('mouseleave', () => {
+        circle.classList.remove('persistent-animation');
+        text1.classList.remove('lowering_anim');
+    });
 });
+
+function incrementWatched(id) {
+    fetch(`http://localhost:3000/data/increment/${id}`, {
+        method: 'PUT',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to increment record');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => console.error('Error incrementing data:', error));
+}
