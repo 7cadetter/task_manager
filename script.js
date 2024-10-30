@@ -9,7 +9,11 @@ fetch('http://localhost:3000/data')
             const watched = item.watched;
             const percent = (watched / episodes) * 100;
 
-            const circle = document.querySelector(`.itembox[id="${item.id}"] .percentage-circle`);
+            const box = document.querySelector(`.itembox[id="${item.id}"]`)
+
+            box.setAttribute('data-current', item.watched);
+            box.setAttribute('data-max', item.episodes);
+            const circle = box.querySelector(`.percentage-circle`);
             if (circle) {
                 circle.style.setProperty('--percentage', percent);
 
@@ -18,10 +22,6 @@ fetch('http://localhost:3000/data')
 
                 if (innerText) innerText.textContent = `${watched}/${episodes}`;
                 if (percentageText) percentageText.textContent = `${Math.round(percent)}%`;
-
-                console.log(`Updated circle for id ${item.id}: ${watched}/${episodes} (${Math.round(percent)}%)`);
-            } else {
-                console.warn(`No circle found for id ${item.id}`);
             }
         });
     })
@@ -38,6 +38,7 @@ addButtons.forEach(button => {
         const maxEpisodes = parseInt(itemBox.getAttribute('data-max'));
 
         if (currentEpisodes < maxEpisodes) {
+            incrementWatched(itemBox.id, '+');
             const newEpisodes = currentEpisodes + 1;
             itemBox.setAttribute('data-current', newEpisodes);
             const percent = (newEpisodes / maxEpisodes) * 100;
@@ -59,6 +60,7 @@ removeButtons.forEach(button => {
         const maxEpisodes = parseInt(itemBox.getAttribute('data-max'));
 
         if (currentEpisodes > 0) {
+            incrementWatched(itemBox.id, '-');
             const newEpisodes = currentEpisodes - 1;
             itemBox.setAttribute('data-current', newEpisodes);
             const percent = (newEpisodes / maxEpisodes) * 100;
@@ -88,8 +90,8 @@ percentageCircles.forEach(circle => {
     });
 });
 
-function incrementWatched(id) {
-    fetch(`http://localhost:3000/data/increment/${id}`, {
+function incrementWatched(id, inorde) {
+    fetch(`http://localhost:3000/data/${inorde}/${id}`, {
         method: 'PUT',
     })
     .then(response => {
