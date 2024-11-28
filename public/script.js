@@ -2,6 +2,7 @@ const titleInput = document.getElementById('titleInput');
 const episodesInput = document.getElementById('episodesInput');
 const addItemButton = document.getElementById('addItemButton');
 
+// Connect to Render database and create item box for each data
 fetch('https://taskmanager-5si3.onrender.com/data')
     .then(response => response.json())
     .then(data => {
@@ -12,18 +13,23 @@ fetch('https://taskmanager-5si3.onrender.com/data')
     })
     .catch(error => console.error('Error fetching data:', error));
 
+
+// If a button is clicked
 document.body.addEventListener('click', function(event) {
+    // If the button is the add button
     if (event.target.classList.contains('addbutton')) {
         const parentbox = event.target.closest('.itembox');
         const currentEpisodes = parseInt(parentbox.getAttribute('data-current'));
         const maxEpisodes = parseInt(parentbox.getAttribute('data-max'));
 
+        // Increment the episodes of the item
         if (currentEpisodes < maxEpisodes) {
             incrementWatched(parentbox.id, '+');
             const newEpisodes = currentEpisodes + 1;
             parentbox.setAttribute('data-current', newEpisodes);
             const percent = (newEpisodes / maxEpisodes) * 100;
 
+            // Update the percentage circle with new percentage
             const percentCircle = parentbox.querySelector('.percentage-circle');
             percentCircle.style.setProperty('--percentage', percent);
 
@@ -31,17 +37,20 @@ document.body.addEventListener('click', function(event) {
             innerCircle.querySelector('.text1').innerText = `${newEpisodes}/${maxEpisodes}`;
             innerCircle.querySelector('.text2').innerText = `${Math.round(percent)}%`;
         }
+    // If the button is the remove button
     } else if (event.target.classList.contains('removebutton')) {
         const parentbox = event.target.closest('.itembox');
         const currentEpisodes = parseInt(parentbox.getAttribute('data-current'));
         const maxEpisodes = parseInt(parentbox.getAttribute('data-max'));
 
+        // Decrement the episodes of the item
         if (currentEpisodes > 0) {
             incrementWatched(parentbox.id, '-');
             const newEpisodes = currentEpisodes - 1;
             parentbox.setAttribute('data-current', newEpisodes);
             const percent = (newEpisodes / maxEpisodes) * 100;
 
+            // Update the percentage circle with new percentage
             const percentCircle = parentbox.querySelector('.percentage-circle');
             percentCircle.style.setProperty('--percentage', percent);
 
@@ -49,15 +58,21 @@ document.body.addEventListener('click', function(event) {
             innerCircle.querySelector('.text1').innerText = `${newEpisodes}/${maxEpisodes}`;
             innerCircle.querySelector('.text2').innerText = `${Math.round(percent)}%`;
         }  
+    // If the button is the finish button
     } else if (event.target.classList.contains('finishbutton')) {
         const parentbox = event.target.closest('.itembox');
 
+        // Remove the item after confirming through warning
         if (confirm("Are you sure you want to remove " + parentbox.querySelector('.boxtitle').innerText + "?") == true) {
             deleteRow(parentbox.id);
         }
     }
 })
 
+/*
+Will update the watched episodes in the database when called. 'inorde' contains a + or - to know if it's
+incremented or decrementing the episodes
+*/
 function incrementWatched(id, inorde) {
     fetch(`https://taskmanager-5si3.onrender.com/data/${inorde}/${id}`, {
         method: 'PUT',
@@ -74,6 +89,7 @@ function incrementWatched(id, inorde) {
     .catch(error => console.error('Error incrementing data:', error));
 }
 
+// If the add item button is clicked, add a row with details entered
 addItemButton.addEventListener('click', () => {
     const title = titleInput.value;
     const episodes = parseInt(episodesInput.value);
@@ -88,6 +104,7 @@ addItemButton.addEventListener('click', () => {
     }
 });
 
+// Adds inputted item's data into the database
 function addRow(title, episodes) {
     console.log("Adding row with title:", title, "and episodes:", episodes);
 
@@ -116,7 +133,7 @@ function addRow(title, episodes) {
     .catch(error => console.error('Error adding data:', error));
 }
 
-
+// Deletes the data of the item from the database
 function deleteRow(id) {
     console.log("Removing row ID", id);
     const itemBox = document.querySelector(`.itembox[id='${id}']`);
@@ -147,40 +164,48 @@ function deleteRow(id) {
 }
 
 
-
+// Visually creates the HTML element to show on the website
 function createItemBox(item) {
     const percent = (item.watched / item.episodes) * 100;
 
+    // Outer box
     const box = document.createElement("div");
     box.className = "itembox";
     box.setAttribute('id', item.id);
 
+    // Image on left of box
     const boximg = document.createElement("img");
     boximg.className = "boximg";
     box.appendChild(boximg);
 
+    // Content in right of box
     const content = document.createElement("div");
     content.className = "boxcontent";
     box.appendChild(content);
 
+    // Title of the item
     const boxtitle = document.createElement("p");
     boxtitle.className = "boxtitle";
     content.appendChild(boxtitle);
 
+    // Outer percentage circle (with gradient)
     const circle = document.createElement("div");
     circle.className = "percentage-circle";
     content.appendChild(circle);
     circle.style.setProperty('--percentage', percent);
     
+    // Inner percentage circle (with details)
     const inner = document.createElement("div");
     inner.className = "innercircle";
     circle.appendChild(inner);
 
+    // Amount of episodes watched in inner circle
     const text1 = document.createElement("span");
     text1.className = "text1";
     inner.appendChild(text1);
     text1.textContent = `${item.watched}/${item.episodes}`;
 
+    // Play animation when circle is hovered over, and back to normal when mouse leaves
     circle.addEventListener('mouseenter', () => {
         circle.classList.add('persistent-animation');
         text1.classList.add('lowering_anim');

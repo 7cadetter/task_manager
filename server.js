@@ -14,16 +14,18 @@ app.use(express.json());
 console.log('Database URL:', process.env.DATABASE_URL);
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false } // Include if connecting securely to an external host
+    ssl: { rejectUnauthorized: false }
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Show index.html at root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/data', async (req, res) => {
+// Select all data from database ordered by id
+app.get('/data', async (res) => {
     try {
         const result = await pool.query('SELECT * FROM mediadata ORDER BY id');
         res.json(result.rows);
@@ -33,6 +35,7 @@ app.get('/data', async (req, res) => {
     }
 });
 
+// Update database by either incrementing or decrementing based on inorde variable
 app.put('/data/:inorde/:id', async (req, res) => {
     const { inorde, id } = req.params;
     let query;
@@ -48,6 +51,7 @@ app.put('/data/:inorde/:id', async (req, res) => {
 
         const result = await pool.query(query, [id]);
 
+        // If the ID is not in the database
         if (result.rowCount === 0) {
             return res.status(404).send('Record not found');
         }
@@ -59,15 +63,18 @@ app.put('/data/:inorde/:id', async (req, res) => {
     }
 });
 
+
+// Insert a new row into database with inputted values
 app.put('/data', async (req, res) => {
     const { episodes, title } = req.body;
 
     try {
         const result = await pool.query(
-            "INSERT INTO mediadata VALUES ($1, $2, 0, 'images/dodypoper.jpg') RETURNING *",
+            "INSERT INTO mediadata (title, episodes, watched) VALUES ($1, $2, 0) RETURNING *",
             [title, episodes]
         );
 
+        // If the data was inserted
         if (result.rows.length > 0) {
             res.status(201).json(result.rows[0]);
         } else {
@@ -80,6 +87,7 @@ app.put('/data', async (req, res) => {
 });
 
 
+// Removes data from database with a certain ID
 app.delete('/data/delete', async (req, res) => { 
     const { id } = req.body;
 
@@ -90,6 +98,7 @@ app.delete('/data/delete', async (req, res) => {
 
         const result = await pool.query("DELETE FROM mediadata WHERE id = $1", [id]);
         
+        // If ID is not in database
         if (result.rowCount === 0) {
             return res.status(404).json({ message: 'Record not found' });
         }
@@ -102,7 +111,7 @@ app.delete('/data/delete', async (req, res) => {
 });
 
 
-
+// Prints when server begins running
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
