@@ -216,33 +216,39 @@ function createItemBox(item) {
         text1.classList.remove('lowering_anim');
     });
 
+    // Percentage out of max episodes in inner circle
     const text2 = document.createElement("span");
     text2.className = "text2";
     inner.appendChild(text2);
     text2.textContent = `${Math.round(percent)}%`;
 
+    // Box of actions at bottom of box
     const actions = document.createElement("div");
     actions.className = "actionsbox";
     content.appendChild(actions);
 
+    // Add an episode
     const addbutton = document.createElement("button");
     addbutton.className = "addbutton";
     actions.appendChild(addbutton);
     addbutton.setAttribute('type', 'button');
     addbutton.textContent = "Add Episode";
 
+    // Remove an episode
     const removebutton = document.createElement("button");
     removebutton.className = "removebutton";
     actions.appendChild(removebutton);
     removebutton.setAttribute('type', 'button');
     removebutton.textContent = "Remove Episode";
 
+    // Finish series (remove element)
     const finishbutton = document.createElement("button");
     finishbutton.className = "finishbutton";
     actions.appendChild(finishbutton);
     finishbutton.setAttribute('type', 'button');
     finishbutton.textContent = "Finish";
 
+    // Add data to attributes
     boxtitle.innerText = item.title;
     box.setAttribute('data-current', item.watched);
     box.setAttribute('data-max', item.episodes);
